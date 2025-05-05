@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuizApp.Data
+namespace QuizApp.Services
 {
-    class FileName
+    class hapusen
     {
     }
 }
