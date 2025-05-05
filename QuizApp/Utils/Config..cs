@@ -1,7 +1,14 @@
-﻿namespace QuizApp.Utils;
+﻿using System;
+using System.IO;
 
-public static class Config
+namespace QuizApp.Utils
 {
-    public static string QuestionPath = "Data/QuestionBank.json";
-    public static string ScorePath = "Data/ScoreLog.json";
+    public static class Config
+    {
+        public static string BaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+        public static string QuestionBankPath => Path.Combine(BaseDirectory, "Data", "QuestionBank.json");
+
+        public static string ScoreLogPath => Path.Combine(BaseDirectory, "Data", "ScoreLog.json");
+    }
 }
