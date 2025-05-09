@@ -1,4 +1,10 @@
-﻿using QuizApp.Services;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using QuizApp.Services;
+
+
+
 
 Console.WriteLine("=== Sistem Quiz ===");
 Console.WriteLine("1. Mulai Quiz");
@@ -9,7 +15,7 @@ var input = Console.ReadLine();
 switch (input)
 {
     case "1":
-        var quiz = new QuizService("Data/QuestionBank.json");
+        var quiz = new QuizService("D:/csharp/QuizApp/QuizApp/Data/QuestionBank.json");
         quiz.StartQuiz();
         break;
     case "2":

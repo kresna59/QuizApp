@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace QuizApp.Models;
-
+namespace QuizApp.Models
+{
+    
 public class Question
 {
     public int Id { get; set; }
@@ -10,4 +11,5 @@ public class Question
     public int CorrectIndex { get; set; }
 
     public bool IsCorrect(int answerIndex) => answerIndex == CorrectIndex;
+}
 }
