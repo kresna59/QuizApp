@@ -88,10 +88,8 @@
     <Compile Include="Services\AdminServices.cs" />
     <Compile Include="Services\QuizServices.cs" />
     <Compile Include="Services\ScoreServices.cs" />
-    <Compile Include="Utils\Config.cs" />
-    <Compile Include="Utils\Validator.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Program.cs" />
+  
+
 	<!-- Stashed changes -->
   </ItemGroup>
   <!-- File data JSON (harus Content) -->
