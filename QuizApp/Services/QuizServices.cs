@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using QuizApp.Models;
@@ -8,10 +8,13 @@ namespace QuizApp.Services
 {
 
 	public class QuizService
+
+
 	{
 		private readonly List<Question> _questions;
 
 		public QuizService(string filePath)
+
 		{
 			if (!File.Exists(filePath)) throw new FileNotFoundException("File soal tidak ditemukan!");
 			var json = File.ReadAllText(filePath);

@@ -8,7 +8,6 @@ namespace QuizApp.Services
     public static class ScoreService
     {
         private static readonly string ScoreFile = "C:/Users/agung/OneDrive/Documents/New folder(3)/QuizApp/QuizApp/Data/ScoreLog.json";
-
         // Fungsi utama (untuk runtime biasa)
         public static void SaveScore(int correct, int total)
         {

@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using QuizApp.Models;
 using System.Text.Json;
+using QuizApp.Models;
+using QuizApp.Utils;
 
 namespace QuizApp.Services
 {
 
     public static class AdminService
     {
-        private static readonly string QuestionFile = "C:/Users/agung/OneDrive/Documents/New folder(3)/QuizApp/QuizApp/Data/QuestionBank.json";
+        private static readonly string QuestionFile = Config.QuestionBankPath;
 
         public static void AddQuestion()
         {
@@ -17,17 +18,29 @@ namespace QuizApp.Services
             Console.Write("Pertanyaan: ");
             string text = Console.ReadLine() ?? "";
 
+            if (!Validator.ValidateNonEmpty(text))
+            {
+                Console.WriteLine("Pertanyaan tidak boleh kosong.");
+                return;
+            }
+
             var options = new List<string>();
             for (int i = 0; i < 4; i++)
             {
                 Console.Write($"Opsi {i + 1}: ");
-                options.Add(Console.ReadLine() ?? "");
+                string input = Console.ReadLine() ?? "";
+                if (!Validator.ValidateNonEmpty(input))
+                {
+                    Console.WriteLine("Opsi tidak boleh kosong.");
+                    return;
+                }
+                options.Add(input);
             }
 
             Console.Write("Jawaban benar (1-4): ");
-            if (!int.TryParse(Console.ReadLine(), out int correctIndex) || correctIndex < 1 || correctIndex > 4)
+            if (!int.TryParse(Console.ReadLine(), out int correctIndex) || !Validator.ValidateAnswer(correctIndex))
             {
-                Console.WriteLine("Input salah.");
+                Console.WriteLine("Input jawaban salah. Masukkan angka 1–4.");
                 return;
             }
 
@@ -40,16 +53,33 @@ namespace QuizApp.Services
             };
 
             List<Question> allQuestions = new();
-            if (File.Exists(QuestionFile))
+
+            try
             {
-                var json = File.ReadAllText(QuestionFile);
-                allQuestions = JsonSerializer.Deserialize<List<Question>>(json) ?? new();
+                if (File.Exists(QuestionFile))
+                {
+                    var json = File.ReadAllText(QuestionFile);
+                    allQuestions = JsonSerializer.Deserialize<List<Question>>(json) ?? new();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Gagal membaca file soal: {ex.Message}");
+                return;
             }
 
             allQuestions.Add(question);
-            File.WriteAllText(QuestionFile, JsonSerializer.Serialize(allQuestions, new JsonSerializerOptions { WriteIndented = true }));
 
-            Console.WriteLine("Soal berhasil ditambahkan.");
+            try
+            {
+                var output = JsonSerializer.Serialize(allQuestions, new JsonSerializerOptions { WriteIndented = true });
+                File.WriteAllText(QuestionFile, output);
+                Console.WriteLine("Soal berhasil ditambahkan.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Gagal menyimpan soal: {ex.Message}");
+            }
         }
     }
 }
