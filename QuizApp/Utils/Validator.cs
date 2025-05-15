@@ -6,11 +6,15 @@ namespace QuizApp.Utils
     public static class Validator
     {
         /// <summary>
-        /// Validates that the selected answer is within range (e.g., 1 to 4)
+        /// Validates that the selected answer is within range (e.g., 1 to 4).
+        /// Throws ArgumentOutOfRangeException if invalid.
         /// </summary>
         public static bool ValidateAnswer(int input, int min = 1, int max = 4)
         {
-            return input >= min && input <= max;
+            if (input < min || input > max)
+                throw new ArgumentOutOfRangeException(nameof(input), $"Jawaban harus antara {min} sampai {max}.");
+
+            return true;
         }
 
         /// <summary>

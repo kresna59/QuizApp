@@ -108,5 +108,27 @@
       "Stadion Kanjuruhan"
     ],
     "CorrectIndex": 1
+  },
+  {
+    "Id": 2663,
+    "Text": "siapa nama ayah kresna?",
+    "Options": [
+      "sukaman",
+      "agung",
+      "joko",
+      "wawan"
+    ],
+    "CorrectIndex": 3
+  },
+  {
+    "Id": 1442,
+    "Text": "kuking",
+    "Options": [
+      "kang",
+      "boo",
+      "omg",
+      "aduh"
+    ],
+    "CorrectIndex": 0
   }
 ]
