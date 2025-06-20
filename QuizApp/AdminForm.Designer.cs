@@ -1,4 +1,4 @@
-﻿namespace QuizApp
+﻿namespace ConsoleApp2
 {
     partial class AdminForm
     {
