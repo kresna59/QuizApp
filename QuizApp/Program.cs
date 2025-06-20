@@ -1,27 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using QuizApp.Services;
+using System.Windows.Forms;
+using QuizApp.Models;
 
-
-
-
-Console.WriteLine("=== Sistem Quiz ===");
-Console.WriteLine("1. Mulai Quiz");
-Console.WriteLine("2. Tambah Soal (Admin)");
-Console.Write("Pilih opsi: ");
-var input = Console.ReadLine();
-
-switch (input)
+namespace ConsoleApp2
 {
-    case "1":
-        var quiz = new QuizService("C:/Users/agung/OneDrive/Documents/New folder(3)/QuizApp/QuizApp/Data/QuestionBank.json");
-        quiz.StartQuiz();
-        break;
-    case "2":
-        AdminService.AddQuestion();
-        break;
-    default:
-        Console.WriteLine("Opsi tidak dikenal.");
-        break;
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new LoginForm());
+        }
+    }
 }

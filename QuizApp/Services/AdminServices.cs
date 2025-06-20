@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.Json;
+using System.Web.Script.Serialization; // Use JavaScriptSerializer from System.Web.Script.Serialization
+using System.Windows.Forms;
 using QuizApp.Models;
 using QuizApp.Utils;
 
@@ -11,6 +12,26 @@ namespace QuizApp.Services
     public static class AdminService
     {
         private static readonly string QuestionFile = Config.QuestionBankPath;
+
+        public static List<Question> GetQuestions()
+        {
+            if (!File.Exists(QuestionFile)) return new List<Question>();
+            var json = File.ReadAllText(QuestionFile);
+            var serializer = new JavaScriptSerializer();
+            return serializer.Deserialize<List<Question>>(json) ?? new List<Question>();
+        }
+
+        public static void DeleteQuestion(int id)
+        {
+            var questions = GetQuestions();
+            var q = questions.Find(x => x.Id == id);
+            if (q != null)
+            {
+                questions.Remove(q);
+                var serializer = new JavaScriptSerializer();
+                File.WriteAllText(QuestionFile, serializer.Serialize(questions));
+            }
+        }
 
         public static void AddQuestion()
         {
@@ -52,14 +73,20 @@ namespace QuizApp.Services
                 CorrectIndex = correctIndex - 1
             };
 
-            List<Question> allQuestions = new();
+            List<Question> allQuestions = new List<Question>();
 
             try
             {
                 if (File.Exists(QuestionFile))
                 {
                     var json = File.ReadAllText(QuestionFile);
-                    allQuestions = JsonSerializer.Deserialize<List<Question>>(json) ?? new();
+                    if (!string.IsNullOrWhiteSpace(json))
+                    {
+                        var serializer = new JavaScriptSerializer();
+                        var obj = serializer.Deserialize<List<Question>>(json);
+                        if (obj != null)
+                            allQuestions = obj;
+                    }
                 }
             }
             catch (Exception ex)
@@ -72,7 +99,8 @@ namespace QuizApp.Services
 
             try
             {
-                var output = JsonSerializer.Serialize(allQuestions, new JsonSerializerOptions { WriteIndented = true });
+                var serializer = new JavaScriptSerializer();
+                var output = serializer.Serialize(allQuestions);
                 File.WriteAllText(QuestionFile, output);
                 Console.WriteLine("Soal berhasil ditambahkan.");
             }
@@ -81,5 +109,43 @@ namespace QuizApp.Services
                 Console.WriteLine($"Gagal menyimpan soal: {ex.Message}");
             }
         }
+        public static void SaveQuestion(Question question)
+        {
+            List<Question> allQuestions = new List<Question>();
+
+            try
+            {
+                if (File.Exists(QuestionFile))
+                {
+                    var json = File.ReadAllText(QuestionFile);
+                    if (!string.IsNullOrWhiteSpace(json))
+                    {
+                        var serializer = new JavaScriptSerializer();
+                        var obj = serializer.Deserialize<List<Question>>(json);
+                        if (obj != null)
+                            allQuestions = obj;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Gagal membaca file soal: {ex.Message}");
+                return;
+            }
+
+            allQuestions.Add(question);
+
+            try
+            {
+                var serializer = new JavaScriptSerializer();
+                var output = serializer.Serialize(allQuestions);
+                File.WriteAllText(QuestionFile, output);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Gagal menyimpan soal: {ex.Message}");
+            }
+        }
+
     }
 }
