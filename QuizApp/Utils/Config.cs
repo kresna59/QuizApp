@@ -1,14 +1,10 @@
-﻿using System;
-using System.IO;
 
 namespace QuizApp.Utils
 {
     public static class Config
     {
-        public static string BaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-
-        public static string QuestionBankPath => Path.Combine(BaseDirectory, "Data", "QuestionBank.json");
-
-        public static string ScoreLogPath => Path.Combine(BaseDirectory, "Data", "ScoreLog.json");
+        public static string QuestionBankPath = "C:/Users/Adamers/Downloads/ConsoleApp2/ConsoleApp2/ConsoleApp2/Data/QuestionBank.json";
+        public static string UserDataPath = "C:/Users/Adamers/Downloads/ConsoleApp2/ConsoleApp2/ConsoleApp2/Data/Users.json";
+        public static string ScoreDataPath = "C:/Users/Adamers/Downloads/ConsoleApp2/ConsoleApp2/ConsoleApp2/Data/ScoreLog.json";
     }
 }
