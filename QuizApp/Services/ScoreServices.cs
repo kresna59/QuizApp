@@ -1,24 +1,37 @@
 using System.Text.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
-namespace QuizApp.Services;
-
-public static class ScoreService
+namespace QuizApp.Services
 {
-    private static readonly string ScoreFile = "Data/ScoreLog.json";
-
-    public static void SaveScore(int correct, int total)
+    public static class ScoreService
     {
-        var result = new { timestamp = DateTime.Now, correct, total };
-        List<object> allScores = new();
-
-        if (File.Exists(ScoreFile))
+        private static readonly string ScoreFile = "C:/Users/agung/OneDrive/Documents/New folder(3)/QuizApp/QuizApp/Data/ScoreLog.json";
+        // Fungsi utama (untuk runtime biasa)
+        public static void SaveScore(int correct, int total)
         {
-            var json = File.ReadAllText(ScoreFile);
-            allScores = JsonSerializer.Deserialize<List<object>>(json) ?? new();
+            SaveScore(correct, total, ScoreFile);
         }
 
-        allScores.Add(result);
-        var updated = JsonSerializer.Serialize(allScores, new JsonSerializerOptions { WriteIndented = true });
-        File.WriteAllText(ScoreFile, updated);
+        // Overload fungsi (untuk unit test)
+        public static void SaveScore(int correct, int total, string filePath)
+        {
+            if (correct < 0 || total <= 0 || correct > total)
+                throw new ArgumentException("Skor tidak valid.");
+
+            var result = new { timestamp = DateTime.Now, correct, total };
+            List<object> allScores = new();
+
+            if (File.Exists(filePath))
+            {
+                var json = File.ReadAllText(filePath);
+                allScores = JsonSerializer.Deserialize<List<object>>(json) ?? new();
+            }
+
+            allScores.Add(result);
+            var updated = JsonSerializer.Serialize(allScores, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(filePath, updated);
+        }
     }
 }
